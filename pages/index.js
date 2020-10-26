@@ -1,4 +1,6 @@
 import Head from 'next/head'
+import Container from '../components/layout/container'
+import Pagination from '../components/pagination/Pagination'
 import styles from '../styles/Home.module.css'
 
 export default function Home() {
@@ -48,6 +50,17 @@ export default function Home() {
             </p>
           </a>
         </div>
+
+        <Container>
+            <p>
+              Instantly deploy your Next.js site to a public URL with Vercel.
+            </p>
+
+            <h3>Examples &rarr;</h3>
+            <p>Discover and deploy boilerplate example Next.js projects.</p>
+        </Container>
+
+        <Pagination />
       </main>
 
       <footer className={styles.footer}>
