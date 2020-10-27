@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import Container from '../components/layout/container'
+import Container from '../components/layout/Container'
 import Pagination from '../components/pagination/Pagination'
 import styles from '../styles/Home.module.css'
 
