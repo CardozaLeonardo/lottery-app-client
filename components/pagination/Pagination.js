@@ -10,7 +10,7 @@ const Pagination = () => {
             <PaginationItem url="/" term="3" active/>
             <PaginationItem url="/" term="..." disabled />
             <PaginationItem url="/" term="4" />
-            <PaginationItem url="/" term=">" />
+            <PaginationItem url="/" next term=">" />
         </div>
     )
 }

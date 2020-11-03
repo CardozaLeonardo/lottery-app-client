@@ -6,17 +6,31 @@ const useFetch = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    async function getList() {
+    const getList = async () => {
 
-        const res = await fetch('https://jsonplaceholder.typicode.com/users', {
+        setIsLoading(true);
+
+        const data = await fetch('http://localhost:8000/players/', {
             method: 'GET',
             mode: 'cors',
             headers: {
-                'Content-type':'application/json',
+                'Content-Type':'application/json'
             }
-        }).then(respuest => respuest.json()).then(respuest => response = respuest)
-        .catch(err => error = err);
+        }).then(respuest => respuest.json())
+        .then((res) => { return res})
+        .catch(err => setError(err));
+
+        
+        setResponse(data);
+        setIsLoading(false);
     }
+
+    return [
+        response,
+        isLoading,
+        error,
+        getList
+    ]
 
     
 }

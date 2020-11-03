@@ -11,7 +11,7 @@ const Button = ({children, type = "button", variant = 'default'}) => {
             'text-primary border-2 border-primary ': variant.includes('pri-outline'),
             'text-secondary border-2 border-secondary': variant.includes('sec-outline'),
             'text-sm px-4 py-1': variant.includes('medium'),
-            'text-base px-8 py-4' : variant.includes('large'),
+            'text-base px-8 py-3' : variant.includes('large'),
             'justify-center': variant.includes('center'),
             'justify-between': variant.includes('between'),
             'w-full': variant.includes('full-width')
