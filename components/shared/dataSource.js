@@ -14,6 +14,10 @@ export const columns = [
     {
       Header: 'Weight',
       accessor: 'weight',
+    },
+    {
+      Header: 'Country',
+      accessor: 'country.name',
     }
    
   ];

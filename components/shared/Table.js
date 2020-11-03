@@ -46,7 +46,7 @@ const Table = ({data}) => {
                         prepareRow(row)
 
                         return(
-                            <div {...row.getRowProps} key={row.cells[i].value} className="h-10 flex py-2 px-6 items-center bg-bg2 mt-1 justify-between hover:bg-blue-900 text-xs">
+                            <div {...row.getRowProps} key={row.cells[0].value} className="h-10 flex py-2 px-6 items-center bg-bg2 mt-1 justify-between hover:bg-blue-900 text-xs">
                                 {
                                     row.cells.map(cell => {
                                         return(
