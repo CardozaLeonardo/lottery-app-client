@@ -9,6 +9,7 @@ const useFetch = () => {
     const getList = async () => {
 
         setIsLoading(true);
+        setError(null);
 
         const data = await fetch('http://localhost:8000/players/', {
             method: 'GET',
