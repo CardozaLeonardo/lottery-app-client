@@ -6,12 +6,12 @@ const useFetch = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getList = async () => {
+    const getList = async (url) => {
 
         setIsLoading(true);
         setError(null);
 
-        const data = await fetch('http://localhost:8000/players/', {
+        const data = await fetch(url, {
             method: 'GET',
             mode: 'cors',
             headers: {

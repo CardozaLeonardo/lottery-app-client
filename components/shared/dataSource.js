@@ -1,23 +1,19 @@
 export const columns = [
     {
-      Header: 'Name',
+      Header: 'Nombres',
       accessor: 'name',
     },
     {
-      Header: 'Birthdate',
-      accessor: 'birth_date',
+      Header: 'Apellidos',
+      accessor: 'lastname',
     },
     {
-      Header: 'Height',
-      accessor: 'height',
+      Header: 'Username',
+      accessor: 'username',
     },
     {
-      Header: 'Weight',
-      accessor: 'weight',
-    },
-    {
-      Header: 'Country',
-      accessor: 'country.name',
+      Header: 'Email',
+      accessor: 'email',
     }
    
   ];

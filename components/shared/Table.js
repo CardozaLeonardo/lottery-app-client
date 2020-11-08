@@ -1,8 +1,8 @@
-import { useRowSelect, useTable } from "react-table";
+import { useTable } from "react-table";
 import {columns} from './dataSource';
 import Pagination from '../pagination/Pagination';
 
-const Table = ({data}) => {
+const Table = ({data, pageIndex, totalPages, onSelectedItem}) => {
 
     const {
         getTableProps,
@@ -10,14 +10,19 @@ const Table = ({data}) => {
         headerGroups,
         rows,
         prepareRow,
+
+        
         
     } = useTable({
         columns,
         data
-    })
+    }
+    )
+
+
 
     return(
-
+        <div>
         <div {...getTableProps()}>
 
             {/*  Header */}
@@ -64,6 +69,9 @@ const Table = ({data}) => {
             </div>
 
             
+        </div>
+
+          <Pagination totalPages={totalPages} onSelectedItem={onSelectedItem} index={pageIndex} />
         </div>
     )
 }
