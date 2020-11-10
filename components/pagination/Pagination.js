@@ -43,7 +43,14 @@ const Pagination = ({index, onSelectedItem, totalPages}) => {
         <div className="flex justify-center">
 
             <div className="flex mt-3 mx-auto py-4">
-                <PaginationItem onSelectedItem={onSelectedItem} index={index}  term="<" previus/>
+                {
+                    index > 1 ? (
+                        <PaginationItem onSelectedItem={onSelectedItem} index={index}  term="<" previus/>
+                    ): (
+                        <PaginationItem onSelectedItem={onSelectedItem} disabled index={index}  term="<" previus/>
+                    )
+                }
+                
                 
                 { index >= 7 ? (
                     <>
@@ -64,7 +71,15 @@ const Pagination = ({index, onSelectedItem, totalPages}) => {
                 <PaginationItem  term="..." disabled />
                 <PaginationItem onSelectedItem={onSelectedItem} term={totalPages - 1} />
                 <PaginationItem onSelectedItem={onSelectedItem} term={totalPages} />
-                <PaginationItem onSelectedItem={onSelectedItem} index={index} next  term=">" />
+
+                {
+                    index < totalPages ? (
+                        <PaginationItem onSelectedItem={onSelectedItem} index={index} next  term=">" />
+                    ): (
+                        <PaginationItem onSelectedItem={onSelectedItem} index={index} next disabled  term=">" />
+                    )
+                }
+                
             </div>
         </div>
     )
