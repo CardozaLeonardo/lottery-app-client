@@ -1,4 +1,4 @@
-const profile =  'https://res.cloudinary.com/dgtemyvsk/image/upload/v1601193741/leo_tzqgcm.jpg';
+const staticProfile =  'https://res.cloudinary.com/dgtemyvsk/image/upload/v1601193741/leo_tzqgcm.jpg';
 
 const UserDropdown = () => {
 
@@ -10,7 +10,7 @@ const UserDropdown = () => {
                     <p className="text-gray-400 text-opacity-75 text-xs" >Admin</p>
                 </div>
                 <figure className="bg-white rounded-full p-px">
-                    <img src={profile} className="h-10 w-10 rounded-full object-cover" alt="username" />
+                    <img src={staticProfile} className="h-10 w-10 rounded-full object-cover" alt="username" />
                 </figure>
             </div>
         </div>
