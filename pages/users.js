@@ -1,6 +1,9 @@
+import { useRouter } from 'next/router';
+
 import Container from "../components/layout/Container";
 import Button from "../components/shared/Button";
 import { IoIosAddCircleOutline } from "react-icons/io";
+import { AiOutlineDashboard, AiOutlineUserSwitch } from 'react-icons/ai';
 import Table from "../components/shared/Table";
 import useFetch from "../hooks/useFetch";
 import { useEffect, useState } from "react";
@@ -8,10 +11,12 @@ import Reloader from "../components/shared/Reloader";
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
+import SidebarOption from "../components/shared/SidebarOption";
 
 
 const Users = () => {
 
+    const router = useRouter();
     const [response, isLoading, error, getList] = useFetch();
     const [pageIndex, setPageIndex] = useState(1);
     //const [totalPages, setTotalPages] = useState(0);
@@ -26,6 +31,20 @@ const Users = () => {
 
             <Sidebar>
                 <div>This is empty for now!</div>
+
+                <div className="mt-12">
+
+                    <SidebarOption action={() => router.push("/login")}>
+                        <AiOutlineDashboard className="mr-2 text-xl" />
+                        Dashboard
+                    </SidebarOption>
+
+                    <SidebarOption action={() => router.push("/users")} active>
+                        <AiOutlineUserSwitch className="mr-2 text-xl" />
+                        Usuarios
+                    </SidebarOption>
+                </div>
+
             </Sidebar>
 
             <div className="w-full">
