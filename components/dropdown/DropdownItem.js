@@ -1,11 +1,11 @@
 
-const DropdownItem = ({link, term}) => {
+const DropdownItem = ({callback, term}) => {
 
     return(
-        <a href={link} className="no-underline h-8 pl-4 text-gray-800 hover:bg-blue-600 
-        hover:text-red-100 text-sm block leading-loose">
+        <button onClick={() => callback()} className="no-underline h-8 pl-4 text-gray-200 hover:bg-blue-900 
+        hover:text-red-100 text-sm text-left block leading-loose w-full">
           {term}
-       </a>
+       </button>
     )
 }
 
