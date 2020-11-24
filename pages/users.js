@@ -1,4 +1,7 @@
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
+import { MainContext } from '../context';
+import Cookies from 'js-cookie';
 
 import Container from "../components/layout/Container";
 import Button from "../components/shared/Button";
@@ -12,23 +15,52 @@ import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import SidebarOption from "../components/shared/SidebarOption";
+import Layer from '../components/shared/Layer';
+
 
 
 const Users = () => {
 
     const router = useRouter();
-    const [response, isLoading, error, getList] = useFetch();
+    const { user, setUser } = useContext(MainContext);
+
+    const [response, isLoading, error, fetcher] = useFetch();
+    const [userResponse, isUserLoading, userError, userFetcher] = useFetch();
     const [pageIndex, setPageIndex] = useState(1);
+    const token = Cookies.get('access_token');
     //const [totalPages, setTotalPages] = useState(0);
 
     useEffect(() => {
-        getList(`https://localhost:5001/api/user?pageNumber=${pageIndex}&pageSize=10`);
+       
+        
+       fetcher.getList(`/user?pageNumber=${pageIndex}&pageSize=10`);
+
+       
     }, [pageIndex])
+
+    useEffect(() => {
+        if(userResponse) {
+            setUser(userResponse);
+        } else {
+
+            userFetcher.get('/auth/me', {
+                method: 'GET',
+                mode: 'cors',
+                headers: {
+                    'Content-Type':'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+        }
+
+    }, [userResponse])
 
 
     return(
-        <div className="flex justify-between" >
-
+        <div className="flex justify-between relative" >
+           
+           <Layer />
+            
             <Sidebar>
                 <div>This is empty for now!</div>
 
@@ -67,7 +99,7 @@ const Users = () => {
     </Button> */}
                     </div>
 
-                    { error ? (<Reloader callback={getList(`https://localhost:5001/api/user?pageNumber=${pageIndex}&pageSize=10`)} />) : null }
+                    { error ? (<Reloader callback={fetcher.getList(`/user?pageNumber=${pageIndex}&pageSize=10`)} />) : null }
                     
                     {
                         response && !isLoading && !error ? (

@@ -1,9 +1,9 @@
 
-const Input = ({placeholder, callback, value}) => {
+const Input = ({type="text",placeholder, callback, value="", name}) => {
 
     return(
-        <input type="text" className="text-gray-400 w-full bg-transparent border-b 
-        border-gray-600 border-opacity-50 text-opacity-50" />
+        <input value={value} type={type} className="text-gray-400 w-full bg-transparent border-b 
+        border-gray-600 border-opacity-50 text-opacity-50" onChange={callback} id={name} name={name}/>
     )
 }
 
