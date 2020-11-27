@@ -1,9 +1,9 @@
 import cx from 'classnames';
 
-const Button = ({children, type = "button", variant = 'default'}) => {
+const Button = ({children, type = "button", variant = 'default', action = () => {}}) => {
 
     return (
-        <button type={type} className={cx( ` rounded-full  
+        <button onClick={action} type={type} className={cx( ` rounded-full  
         cursor-pointer focus:outline-none flex items-center`,{
             'text-gray1 bg-transparent border-2 border-opacity-25 text-opacity border-gray1': variant.includes('default'),
             'text-white border-primary bg-primary': variant.includes('primary'),

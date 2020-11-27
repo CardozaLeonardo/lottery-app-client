@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getToken } from "../util/cookie";
 
 const BASE_URL = 'https://localhost:5001/api';
 
@@ -30,6 +31,7 @@ const useFetch = () => {
 
     const get = async (url, data) => {
         setIsLoading(true);
+        //setResponse(null);
         setError(null);
 
         const resp = await fetch(`${BASE_URL}${url}`, data).then(respuest => {
@@ -39,6 +41,7 @@ const useFetch = () => {
                 return respuest.json()
             }else{
                 setError(respuest.status)
+                return respuest.json()
             }
         })
         .then((res) => { return res})
@@ -50,13 +53,15 @@ const useFetch = () => {
 
     const post = async (url, data) => {
         setIsLoading(true);
+        setResponse(null);
         setError(null);
 
         const resp = await fetch(`${BASE_URL}${url}`, {
             method: 'POST',
             mode: 'cors',
             headers: {
-                'Content-Type':'application/json'
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${getToken()}`
             },
             body: JSON.stringify(data)
         }).then(respuest => {
@@ -65,7 +70,39 @@ const useFetch = () => {
 
                 return respuest.json()
             }else{
+                
                 setError(respuest.status)
+                return respuest.json()
+            }
+        })
+        .then((res) => { return res})
+        .catch(err => {setError(err.status)});
+
+        setResponse(resp);
+        setIsLoading(false);
+    }
+
+    const deleteRes = async (url) => {
+        
+        setIsLoading(true);
+        //setResponse(null);
+        setError(null);
+
+        const resp = await fetch(`${BASE_URL}${url}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${getToken()}`
+            },
+        }).then(respuest => {
+
+            if(respuest.ok) {
+
+                return respuest.json()
+            }else{
+                setError(respuest.status)
+                return respuest.json()
             }
         })
         .then((res) => { return res})
@@ -82,7 +119,8 @@ const useFetch = () => {
         {
             getList,
             post,
-            get
+            get,
+            deleteRes
         }
         
     ]

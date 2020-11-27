@@ -16,19 +16,25 @@ import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
 import SidebarOption from "../components/shared/SidebarOption";
 import Layer from '../components/shared/Layer';
+import UserForm from '../components/form/UserForm';
 
 
 
 const Users = () => {
 
     const router = useRouter();
-    const { user, setUser } = useContext(MainContext);
+    const { user, setUser, setLayer } = useContext(MainContext);
 
     const [response, isLoading, error, fetcher] = useFetch();
     const [userResponse, isUserLoading, userError, userFetcher] = useFetch();
     const [pageIndex, setPageIndex] = useState(1);
     const token = Cookies.get('access_token');
-    //const [totalPages, setTotalPages] = useState(0);
+    const [visibleForm, setVisibleForm] = useState(false);
+
+    const onAddUser = () => {
+        setLayer(true);
+        setVisibleForm(true);
+    }
 
     useEffect(() => {
        
@@ -60,13 +66,21 @@ const Users = () => {
         <div className="flex justify-between relative" >
            
            <Layer />
+
+           {
+               visibleForm ? (
+                 <UserForm close={setVisibleForm} />
+               ): null
+           }
             
             <Sidebar>
                 <div>This is empty for now!</div>
 
                 <div className="mt-12">
 
-                    <SidebarOption action={() => router.push("/login")}>
+                    <div className="pt-10">
+
+                    <SidebarOption action={() => router.push("/")}>
                         <AiOutlineDashboard className="mr-2 text-xl" />
                         Dashboard
                     </SidebarOption>
@@ -75,6 +89,7 @@ const Users = () => {
                         <AiOutlineUserSwitch className="mr-2 text-xl" />
                         Usuarios
                     </SidebarOption>
+                    </div>
                 </div>
 
             </Sidebar>
@@ -89,14 +104,16 @@ const Users = () => {
                     <br />
                     <br />
 
+
                     <div className="w-full">
-                        {/*<Button variant="pri-outline large center">
-                        <IoIosAddCircleOutline className="text-2xl mr-1" /> Add User
-                        </Button>
+                        {/*
                         <br />
                         <Button variant="medium default">
                             FETCH DATA
     </Button> */}
+                        <Button action={onAddUser} variant="pri-outline large center">
+                           <IoIosAddCircleOutline className="text-2xl mr-1" /> Add User
+                        </Button>
                     </div>
 
                     { error ? (<Reloader callback={fetcher.getList(`/user?pageNumber=${pageIndex}&pageSize=10`)} />) : null }

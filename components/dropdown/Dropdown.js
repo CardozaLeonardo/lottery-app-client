@@ -1,7 +1,6 @@
 import { useContext } from 'react';
 import { MainContext } from '../../context';
 import { useRef, useEffect } from "react";
-import { IoMdArrowDropdown } from "react-icons/io";
 
 const Dropdown = ({ children, close }) => {
 
@@ -31,10 +30,12 @@ const Dropdown = ({ children, close }) => {
     }, []);
 
     return (
-        <div className="w-48 absolute z-20" style={{right: '15px', top: '30px'}} ref={ref}>
+        <div className="w-48 absolute z-20" style={{right: '13px', top: '45px'}} ref={ref}>
             <div className="flex items-end justify-end">
                 <div className="transform rotate-180">
-                    <IoMdArrowDropdown className=" flex items-end text-4xl p-0 m-0 text-gray-200" />
+                    
+                    <div className="transform rotate-180" style={{width: '0', height:'0', borderLeft: '10px solid transparent',
+                   borderRight: '10px solid transparent', borderBottom: '10px solid #393857'}}></div>
                 </div>
             </div>
             <div className="bg-bg2 rounded-lg border border-solid 

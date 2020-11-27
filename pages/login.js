@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
-import Cookies from 'js-cookie';
+import { setToken, getToken } from  '../util/cookie';
 //import BaseForm from "../components/form/BaseForm";
 import Input from "../components/form/Input";
 import InputGroup from "../components/form/InputGroup";
@@ -12,15 +12,31 @@ import { useRouter } from 'next/router';
 const Login = () => {
 
     const [response, isLoading, error, fetcher] = useFetch();
+    const [userResponse, isUserLoading, userError, userFetcher] = useFetch();
     const router = useRouter();
-    const [fail, setFail] = useState(false);
+    const token = getToken();
+
+    useEffect(() => {
+        userFetcher.get('/auth/me', {
+            method: 'GET',
+            mode: 'cors',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        })
+    }, [])
+
+    if(userResponse && userResponse.username) {
+        router.push("/");
+    }
+    
 
     useEffect(() => {
         
         if(response) {
 
-            
-            Cookies.set('access_token', response.token)
+            setToken(response.token);
             router.push("/users");
         }
 
