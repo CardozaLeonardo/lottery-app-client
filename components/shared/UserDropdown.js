@@ -9,19 +9,21 @@ const staticProfile =  'https://res.cloudinary.com/dgtemyvsk/image/upload/v16011
 
 const UserDropdown = () => {
 
-    const { user, setLayer } = useContext(MainContext);
-    const [visible, setVisible] = useState(false);
+    const [show, setShow] = useState(false);
+    const { user } = useContext(MainContext);
     const router = useRouter();
 
     const onItemClicked = () => {
-        setVisible(!visible);
-        setLayer(true);
+        //setLayer(true);
+        setShow(true);
+
+        console.log("Clicked");
     }
 
     const onLogoutClicked = () => {
 
         deleteToken();
-        router.push('/login');
+        router.replace('/login');
     }
     
     return (
@@ -37,8 +39,8 @@ const UserDropdown = () => {
             </div>
 
             {
-                visible ? (
-                    <Dropdown close={setVisible}>
+                show ? (
+                    <Dropdown close={setShow}>
                         <DropdownItem term="Configuracion" callback={() => {}} />
                         <DropdownItem term="Salir" callback={onLogoutClicked} />
                     </Dropdown>

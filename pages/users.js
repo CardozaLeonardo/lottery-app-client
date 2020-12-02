@@ -17,6 +17,9 @@ import Footer from "../components/layout/Footer";
 import SidebarOption from "../components/shared/SidebarOption";
 import Layer from '../components/shared/Layer';
 import UserForm from '../components/form/UserForm';
+import getUserTableHeader from '../util/headers/UserTableHeader';
+import Spinner from '../components/shared/Spinner';
+import ConfirmationDialog from '../components/form/ConfirmationDialog';
 
 
 
@@ -27,13 +30,27 @@ const Users = () => {
 
     const [response, isLoading, error, fetcher] = useFetch();
     const [userResponse, isUserLoading, userError, userFetcher] = useFetch();
+    const [delResponse, delLoading, delError, delFetcher] = useFetch();
+
     const [pageIndex, setPageIndex] = useState(1);
     const token = Cookies.get('access_token');
     const [visibleForm, setVisibleForm] = useState(false);
+    const [showDialog, setShowDialog] = useState(false);
+    const [selectedItem, setSelectedItem] = useState(null);
 
     const onAddUser = () => {
         setLayer(true);
         setVisibleForm(true);
+    }
+
+    const onDeletedSelect = (value) => {
+        setShowDialog(p => !p);
+        setSelectedItem(value);
+    }
+
+    const onDeleteUser = () => {
+
+        delFetcher.deleteRes(`/user/${selectedItem}`);
     }
 
     useEffect(() => {
@@ -61,11 +78,21 @@ const Users = () => {
 
     }, [userResponse])
 
+    
+
 
     return(
         <div className="flex justify-between relative" >
            
            <Layer />
+
+           {
+               showDialog ? (
+                   <ConfirmationDialog close={setShowDialog} action={onDeleteUser}>
+                       ¿Está seguro de continuar con la acción?
+                   </ConfirmationDialog>
+               ): null
+            }
 
            {
                visibleForm ? (
@@ -120,11 +147,10 @@ const Users = () => {
                     
                     {
                         response && !isLoading && !error ? (
-                            <Table data={response.data} onSelectedItem={setPageIndex} pageIndex={pageIndex} totalPages={response.pages} />
+                            <Table data={response.data} onSelectedItem={setPageIndex} 
+                            pageIndex={pageIndex} totalPages={response.pages} columns={getUserTableHeader(onDeletedSelect, null)} />
                         ): (
-                            <p className="text-center text-gray-500">
-                                Loading...
-                            </p>
+                            <Spinner />
                         )
                     }
 

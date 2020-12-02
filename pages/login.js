@@ -8,6 +8,7 @@ import Container from "../components/layout/Container";
 import Button from "../components/shared/Button";
 import useFetch from "../hooks/useFetch";
 import { useRouter } from 'next/router';
+import Spinner from "../components/shared/Spinner";
 
 const Login = () => {
 
@@ -27,14 +28,10 @@ const Login = () => {
         })
     }, [])
 
-    if(userResponse && userResponse.username) {
-        router.push("/");
-    }
-    
 
     useEffect(() => {
         
-        if(response) {
+        if(response && response.token) {
 
             setToken(response.token);
             router.push("/users");
@@ -42,10 +39,13 @@ const Login = () => {
 
     }, [response])
 
+    if(userResponse && !userResponse.username) {
+        router.push("/");
+    }
+
 
     const onFormSubit = (values) => {
          fetcher.post('/auth/login', values);
-
     }
 
     const formik = useFormik({
@@ -81,7 +81,7 @@ const Login = () => {
 
                             {
                                 isLoading ? (
-                                    <p className="text-center text-gray-200">Cargando...</p>
+                                    <Spinner />
                                 ): null
                             }
 

@@ -7,15 +7,30 @@ import InputGroup from "./InputGroup";
 import Button from '../shared/Button';
 import * as Yup from 'yup';
 import { MainContext } from '../../context';
+import Spinner from '../shared/Spinner';
+import Select from './Select';
 
 const emptyInitial = {
     username: '',
     email: '',
     name: '',
     lastname: '',
+    roleId: 0,
     password: '',
     passwordConfirmation: ''
 };
+
+const roles = [
+    {
+        id: 1,
+        name: 'Admin'
+    },
+
+    {
+        id: 2,
+        name: 'Jugador'
+    }
+];
 
 const userValidationSchema = Yup.object({
 
@@ -38,6 +53,9 @@ const userValidationSchema = Yup.object({
     .max(60, 'Muy largo')
     .required('Requerido'),
 
+    roleId: Yup.string()
+    .required('Requerido'),
+
     password: Yup.string()
     .min(8, 'Muy corto')
     .max(40, 'Muy largo')
@@ -47,12 +65,13 @@ const userValidationSchema = Yup.object({
     .oneOf([Yup.ref('password'), null], 'Las contraseñas no coinciden')
 })
 
-const UserForm = ({data = emptyInitial, close}) => {
+const UserForm = ({data = emptyInitial, close, updatePassword=false}) => {
 
     const [response, isLoading, error, fetcher] = useFetch();
     const { setLayer } = useContext(MainContext);
 
     const onSubmitAction = (values) => {
+        values.roleId = parseInt(values.roleId);
         fetcher.post('/user', values);
     }
 
@@ -115,8 +134,13 @@ const UserForm = ({data = emptyInitial, close}) => {
                             { touched.passwordConfirmation && errors.passwordConfirmation && <p className="text-xs text-red-500">{errors.passwordConfirmation}</p> }
                         </InputGroup>
 
+                        <InputGroup label="ROL">
+                            <Select name="roleId" items={roles} value={values.roleId} callback={handleChange} />
+                            { touched.roleId && errors.roleId && <p className="text-xs text-red-500">{errors.roleId}</p> }
+                        </InputGroup>
+
                         {
-                            isLoading && <p className="text-center my-3">Guardando...</p>
+                            isLoading && <Spinner />
                         }
 
                         <div className="flex justify-between pt-4">

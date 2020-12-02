@@ -1,8 +1,7 @@
 import { useTable } from "react-table";
-import {columns} from './dataSource';
 import Pagination from '../pagination/Pagination';
 
-const Table = ({data, pageIndex, totalPages, onSelectedItem}) => {
+const Table = ({data, columns, pageIndex, totalPages, onSelectedItem}) => {
 
     const {
         getTableProps,

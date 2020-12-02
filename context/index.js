@@ -16,6 +16,7 @@ export const MainProvider = ({children}) => {
     const [user, setUser] = useState(userTest);
     const [isLogged, setLogged] = useState(null);
     const [layer, setLayer] = useState(false);
+    
 
     return (
         <MainContext.Provider value={{

@@ -9,6 +9,7 @@ const Dropdown = ({ children, close }) => {
 
     useEffect(() => {
 
+        setLayer(true);
         const onBodyClick = (event) => {
             if(!ref.current) {
                 setLayer(false);
@@ -20,12 +21,13 @@ const Dropdown = ({ children, close }) => {
             }
 
             close(false);
-            setLayer(false);
+            //setLayer(false);
         }
         document.body.addEventListener('click', onBodyClick);
 
         return () => {
             document.body.removeEventListener('click', onBodyClick);
+            setLayer(false);
         }
     }, []);
 
