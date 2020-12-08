@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MainContext } from '../context';
-import Cookies from 'js-cookie';
+import _ from 'lodash';
 
 import Container from "../components/layout/Container";
 import Button from "../components/shared/Button";
@@ -14,12 +14,13 @@ import Reloader from "../components/shared/Reloader";
 import Sidebar from "../components/layout/Sidebar";
 import Header from "../components/layout/Header";
 import Footer from "../components/layout/Footer";
-import SidebarOption from "../components/shared/SidebarOption";
 import Layer from '../components/shared/Layer';
-import UserForm from '../components/form/UserForm';
+import UserCreateForm from '../components/form/UserForm/UserCreateForm';
+import UserUpdateForm from '../components/form/UserForm/UserUpdateForm';
 import getUserTableHeader from '../util/headers/UserTableHeader';
 import Spinner from '../components/shared/Spinner';
 import ConfirmationDialog from '../components/form/ConfirmationDialog';
+import Alert from '../components/shared/Alert';
 
 
 
@@ -33,47 +34,71 @@ const Users = () => {
     const [delResponse, delLoading, delError, delFetcher] = useFetch();
 
     const [pageIndex, setPageIndex] = useState(1);
-    const token = Cookies.get('access_token');
     const [visibleForm, setVisibleForm] = useState(false);
+    const [visibleUpdateForm, setVisibleUpdateForm] = useState(false);
     const [showDialog, setShowDialog] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
+    const [alert, setAlert] = useState(null);
 
     const onAddUser = () => {
         setLayer(true);
         setVisibleForm(true);
     }
 
+    
+
     const onDeletedSelect = (value) => {
         setShowDialog(p => !p);
         setSelectedItem(value);
     }
 
-    const onDeleteUser = () => {
-
-        delFetcher.deleteRes(`/user/${selectedItem}`);
+    const onUpdateSelected = (value) => {
+        setSelectedItem(value);
+        setVisibleUpdateForm(true);
     }
+
+    const onDeleteUser = async () => {
+
+        await delFetcher.deleteRes(`/user/${selectedItem}`);
+
+        if(delResponse) {
+            setShowDialog(false);
+            setAlert({
+                color: 'success',
+                text: 'Se ha eliminado el usuario correctamente'
+            });
+        }
+    }
+
+    
 
     useEffect(() => {
        
-        
-       fetcher.getList(`/user?pageNumber=${pageIndex}&pageSize=10`);
+       if(!error) {
+           
+          fetcher.getList(`/user/list?pageNumber=${pageIndex}&pageSize=10`);
+          
+       }
 
-       
     }, [pageIndex])
+
+    
 
     useEffect(() => {
         if(userResponse) {
             setUser(userResponse);
         } else {
 
-            userFetcher.get('/auth/me', {
-                method: 'GET',
-                mode: 'cors',
-                headers: {
-                    'Content-Type':'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
+            userFetcher.get('/auth/me');
+        }
+        console.log("Hola");
+        console.log(userError);
+
+        if(userError && userError == 401) {
+            console.log("Holaa");
+            router.replace("/login");
+        } else if(userError && userError == 403) {
+            router.replace("/logins");
         }
 
     }, [userResponse])
@@ -88,7 +113,7 @@ const Users = () => {
 
            {
                showDialog ? (
-                   <ConfirmationDialog close={setShowDialog} action={onDeleteUser}>
+                   <ConfirmationDialog close={setShowDialog} action={onDeleteUser} isLoading={delLoading}>
                        ¿Está seguro de continuar con la acción?
                    </ConfirmationDialog>
                ): null
@@ -96,30 +121,17 @@ const Users = () => {
 
            {
                visibleForm ? (
-                 <UserForm close={setVisibleForm} />
+                 <UserCreateForm close={setVisibleForm}  alertAction={setAlert}/>
+               ): null
+           }
+
+           {
+               visibleUpdateForm ? (
+                 <UserUpdateForm close={setVisibleUpdateForm} selectedItem={selectedItem} alertAction={setAlert}/>
                ): null
            }
             
-            <Sidebar>
-                <div>This is empty for now!</div>
-
-                <div className="mt-12">
-
-                    <div className="pt-10">
-
-                    <SidebarOption action={() => router.push("/")}>
-                        <AiOutlineDashboard className="mr-2 text-xl" />
-                        Dashboard
-                    </SidebarOption>
-
-                    <SidebarOption action={() => router.push("/users")} active>
-                        <AiOutlineUserSwitch className="mr-2 text-xl" />
-                        Usuarios
-                    </SidebarOption>
-                    </div>
-                </div>
-
-            </Sidebar>
+            <Sidebar />
 
             <div className="w-full">
 
@@ -130,6 +142,13 @@ const Users = () => {
 
                     <br />
                     <br />
+                    {
+                        alert ? (
+                            <Alert color={alert.color} close={setAlert}>
+                                <p>{ alert.text }</p>
+                            </Alert>
+                        ) : null
+                    }
 
 
                     <div className="w-full">
@@ -143,14 +162,16 @@ const Users = () => {
                         </Button>
                     </div>
 
-                    { error ? (<Reloader callback={fetcher.getList(`/user?pageNumber=${pageIndex}&pageSize=10`)} />) : null }
+                    { error && !isLoading && <Reloader callback={fetcher.getList(`/user/list?pageNumber=${pageIndex}&pageSize=10`)} /> }
                     
                     {
                         response && !isLoading && !error ? (
                             <Table data={response.data} onSelectedItem={setPageIndex} 
-                            pageIndex={pageIndex} totalPages={response.pages} columns={getUserTableHeader(onDeletedSelect, null)} />
+                            pageIndex={pageIndex} totalPages={response.pages} columns={getUserTableHeader(onDeletedSelect, onUpdateSelected)} />
                         ): (
-                            <Spinner />
+                            <div className="py-3">
+                                <Spinner />
+                            </div>
                         )
                     }
 

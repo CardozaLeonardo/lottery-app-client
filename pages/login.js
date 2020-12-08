@@ -1,7 +1,8 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { setToken, getToken } from  '../util/cookie';
-//import BaseForm from "../components/form/BaseForm";
+import * as Yup from 'yup';
+
 import Input from "../components/form/Input";
 import InputGroup from "../components/form/InputGroup";
 import Container from "../components/layout/Container";
@@ -9,6 +10,19 @@ import Button from "../components/shared/Button";
 import useFetch from "../hooks/useFetch";
 import { useRouter } from 'next/router';
 import Spinner from "../components/shared/Spinner";
+
+const loginValidationSchema = Yup.object({
+
+    username: Yup.string()
+    .min(5, 'Muy corto')
+    .max(40, 'Muy largo')
+    .required('Requerido'),
+
+    password: Yup.string()
+    .min(8, 'Muy corto')
+    .max(40, 'Muy largo')
+    .required('Requerido'),
+});
 
 const Login = () => {
 
@@ -48,40 +62,41 @@ const Login = () => {
          fetcher.post('/auth/login', values);
     }
 
-    const formik = useFormik({
+    const { values, errors, handleSubmit, handleChange, touched } = useFormik({
         initialValues: {username: '', password: ''},
-        onSubmit: values => onFormSubit(values) 
-        //validationSchema: validation  
+        onSubmit: values => onFormSubit(values),
+        validationSchema: loginValidationSchema  
     });
 
     return(
         <div>
             <Container>
                 <div style={{height: '100vh'}} className="flex justify-center items-center">
-                    <div className="bg-bg2 rounded px-5 py-5 w-2/5">
+                    <div className="bg-bg2 rounded px-5 py-5" style={{width: '400px'}}>
 
-                    <form className="w-full" onSubmit={formik.handleSubmit}>
+                    <form className="w-full" onSubmit={handleSubmit}>
                            <h1 className="text-center text-white text-4xl mb-6">
-                                Inicie Sesión
+                                Iniciar Sesión
                             </h1>
 
                             <p className="text-gray-500 text-opacity-25 mb-4">
-                                aslaskakslasasaslasklaskl
-                                saslkslakslasklks
+                                Presente sus credenciales
                             </p>
                             
                             <InputGroup label="USUARIO O CORREO">
-                                <Input value={formik.values.username} callback={formik.handleChange} name="username"/>
+                                <Input value={values.username} callback={handleChange} name="username"/>
+                                { touched.username && errors.username && <p className="text-xs text-red-500">{errors.username}</p> }
                             </InputGroup>
 
                             <InputGroup label="CONTRASEÑA">
-                                <Input type="password" value={formik.values.password} name="password" callback={formik.handleChange}/>
+                                <Input type="password" value={values.password} name="password" callback={handleChange}/>
+                                { touched.password && errors.password && <p className="text-xs text-red-500">{errors.password}</p> }
                             </InputGroup>
                             
 
                             {
                                 isLoading ? (
-                                    <Spinner />
+                                    <Spinner height={10} width={3} />
                                 ): null
                             }
 

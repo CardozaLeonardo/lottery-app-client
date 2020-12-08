@@ -3,10 +3,13 @@ import { createContext, useState } from 'react';
 const userTest = {
     id: 27,
     username: 'wait...',
-    role: {
-        id: 2,
-        name: 'Admin'
-    }
+    roles: [
+        {
+            id: 2,
+            name: '...'
+        }
+    ]
+    
 };
 
 export const MainContext = createContext();

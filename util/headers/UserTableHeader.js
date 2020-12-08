@@ -27,6 +27,7 @@ const getUserTableHeader = (onDeleteSelected, onUpdateSeleted) => {
         return (
           <div className="px-3 flex justify-between">
              <Button action={() => onDeleteSelected(value)} variant="primary medium"> ELIMINAR </Button>
+             <Button action={() => onUpdateSeleted(value)} variant="primary medium"> ACTUALIZAR </Button>
           </div>
         )
       }

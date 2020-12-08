@@ -1,11 +1,13 @@
+import { useRouter } from "next/router";
 
-const SidebarOption = ({action, children, active}) => {
+const SidebarOption = ({action, children, page}) => {
 
-    const bgActive = active ? 'bg-blue-900':'';
+    const router = useRouter();
+    const bgActive = page == router.pathname  ? 'bg-blue-900':'hover:bg-gray-500';
 
     return (
         <div onClick={() => action()} className={`flex py-3 px-2 text-gray-300 text-sm rounded-xl 
-        hover:bg-gray-500 cursor-pointer items-center delay-75 ${bgActive}`}>
+         cursor-pointer items-center delay-75 ${bgActive}`}>
             {children}
         </div>
     )
