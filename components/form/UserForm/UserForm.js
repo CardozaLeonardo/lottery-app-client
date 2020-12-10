@@ -85,7 +85,7 @@ const UserForm = ({data = emptyInitial, close, updatePassword=false,
     }
 
 
-    if(response) {
+    if(response && !error) {
         
         setLayer(false);
         close(false);

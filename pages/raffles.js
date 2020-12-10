@@ -1,18 +1,14 @@
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import { MainContext } from '../context';
-import _ from 'lodash';
 
 import useFetch from "../hooks/useFetch";
 import { useEffect, useState } from "react";
 import Spinner from '../components/shared/Spinner';
-import UsersContent from '../components/content/UsersContent';
+import RafflesContent from '../components/content/RafflesContent';
 import Forbidden from '../components/content/Forbidden';
 
-
-
-const Users = () => {
-
+const Raffles = () => {
     const router = useRouter();
     const { user, setUser, setLayer } = useContext(MainContext);
     const [userResponse, isUserLoading, userError, userFetcher] = useFetch();
@@ -34,9 +30,6 @@ const Users = () => {
 
     }, [userResponse])
 
-    
-
-
     return(
         <>
             { isUserLoading &&
@@ -46,7 +39,7 @@ const Users = () => {
             }
 
             {
-                userResponse && !userError && user && user.roles[0].name == 'Admin' && <UsersContent />
+                userResponse && !userError && user && user.roles[0].name == 'Admin' && <RafflesContent />
             }
 
             {
@@ -56,4 +49,4 @@ const Users = () => {
     )
 }
 
-export default Users;
+export default Raffles;

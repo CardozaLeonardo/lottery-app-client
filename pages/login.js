@@ -48,7 +48,8 @@ const Login = () => {
         if(response && response.token) {
 
             setToken(response.token);
-            router.push("/users");
+            //router.push("/users");
+            window.location.replace('./');
         }
 
     }, [response])
@@ -70,11 +71,10 @@ const Login = () => {
 
     return(
         <div>
-            <Container>
                 <div style={{height: '100vh'}} className="flex justify-center items-center">
                     <div className="bg-bg2 rounded px-5 py-5" style={{width: '400px'}}>
 
-                    <form className="w-full" onSubmit={handleSubmit}>
+                    <form className="w-full" onSubmit={handleSubmit} autoComplete="OFF">
                            <h1 className="text-center text-white text-4xl mb-6">
                                 Iniciar Sesión
                             </h1>
@@ -114,7 +114,6 @@ const Login = () => {
                      
                     </div>
                 </div>
-            </Container>
         </div>
     )
 }

@@ -4,6 +4,7 @@ import { MainContext } from '../../context';
 import Dropdown from '../dropdown/Dropdown';
 import DropdownItem from '../dropdown/DropdownItem';
 import { deleteToken } from '../../util/cookie';
+import { RiWindowsFill } from 'react-icons/ri';
 
 const staticProfile =  'https://res.cloudinary.com/dgtemyvsk/image/upload/v1601193741/leo_tzqgcm.jpg';
 
@@ -16,14 +17,13 @@ const UserDropdown = () => {
     const onItemClicked = () => {
         //setLayer(true);
         setShow(true);
-
-        console.log("Clicked");
     }
 
     const onLogoutClicked = () => {
 
         deleteToken();
-        router.replace('/login');
+        //router.replace('/login');
+        window.location.replace('./login');
     }
     
     return (

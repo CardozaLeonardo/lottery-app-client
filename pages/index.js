@@ -1,4 +1,4 @@
-import { resolveHref } from 'next/dist/next-server/lib/router/router';
+
 import { useContext, useEffect } from 'react';
 import Container from '../components/layout/Container';
 import Footer from '../components/layout/Footer';
@@ -31,28 +31,33 @@ export default function Home() {
   }, [response])
 
   return (
-    
-   <div className="flex justify-between relative">
+   <> 
+   <div className="flex justify-between min-h-full">
 
      <Layer />
 
      <Sidebar />
 
      <div className="w-full">
-       <Header />
+       
 
        <Container>
+          <Header />
          <div className="w-full">
            <RaffleBox />
          </div>
+       
        </Container>
 
-       <Footer />
+       
+
      </div>
       
       
 
       {/*<UserForm /> */}
    </div>
+   <Footer />
+   </>
   )
 }

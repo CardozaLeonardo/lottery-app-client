@@ -1,6 +1,4 @@
-import Button from "../../components/shared/Button";
-
-
+import OperationIcon from "../../components/form/OperationIcon";
 
 const getUserTableHeader = (onDeleteSelected, onUpdateSeleted) => {
    return [
@@ -25,9 +23,10 @@ const getUserTableHeader = (onDeleteSelected, onUpdateSeleted) => {
       accessor: 'id',
       Cell: ({cell: {value}}) => {
         return (
-          <div className="px-3 flex justify-between">
-             <Button action={() => onDeleteSelected(value)} variant="primary medium"> ELIMINAR </Button>
-             <Button action={() => onUpdateSeleted(value)} variant="primary medium"> ACTUALIZAR </Button>
+          <div className="px-3 flex justify-evenly">
+             <OperationIcon type="view" action={() => {}} />
+             <OperationIcon type="edit" action={() => onUpdateSeleted(value)} />
+             <OperationIcon type="delete" action={() => onDeleteSelected(value)} />
           </div>
         )
       }

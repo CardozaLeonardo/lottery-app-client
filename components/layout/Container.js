@@ -2,7 +2,7 @@
 const Container = ({children}) => {
 
     return(
-        <div className="w-11/12 px-3 pt-3 mx-auto rounded">
+        <div className="px-3 pt-3 rounded min-h-full" style={{marginLeft: '270px', width: 'calc(100% - 270px)'}}>
             { children }
         </div>
     )

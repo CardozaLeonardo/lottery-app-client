@@ -6,7 +6,7 @@ const UserCreateForm = ({close, alertAction}) => {
     return (
 
         <Modal close={close}>
-            <UserForm alertAction={alertAction}/>
+            <UserForm alertAction={alertAction} close={close}/>
         </Modal>
     )
 }

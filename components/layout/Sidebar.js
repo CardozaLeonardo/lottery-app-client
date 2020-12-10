@@ -4,7 +4,8 @@ import { MainContext } from "../../context";
 import SidebarOption from "../shared/SidebarOption";
 import Spinner from "../shared/Spinner";
 import Logo from "../shared/Logo";
-import { AiOutlineDashboard, AiOutlineUserSwitch } from 'react-icons/ai';
+import { AiOutlineDashboard, AiOutlineUserSwitch, 
+    AiOutlineHistory, AiOutlinePlayCircle } from 'react-icons/ai';
 
 const Sidebar = ({}) => {
 
@@ -13,25 +14,44 @@ const Sidebar = ({}) => {
     
     return (
 
-        <div className="bg-bg2 w-sd px-4" >
+        <div className="bg-bg2 px-4 fixed inset-y-0 left-0" style={{width: '270px'}}>
             {
                 user.email ? (
                     <div>
                         <Logo />
 
-                        <div className="mt-12">
+                        <div className="mt-6">
 
-                            <div className="pt-10">
+                            <div className="pt-8">
 
                             <SidebarOption action={() => router.push("/")} page="/">
                                 <AiOutlineDashboard className="mr-2 text-xl" />
                                 Dashboard
                             </SidebarOption>
 
-                            <SidebarOption action={() => router.push("/users")} page="/users">
-                                <AiOutlineUserSwitch className="mr-2 text-xl" />
-                                Usuarios
-                            </SidebarOption>
+                            { user.roles[0].name == 'Admin' &&
+                                <SidebarOption action={() => router.push("/users")} page="/users">
+                                    <AiOutlineUserSwitch className="mr-2 text-xl" />
+                                    Usuarios
+                                </SidebarOption>
+                            }
+
+                            {
+                                user.roles[0].name == 'Player' &&
+                                <SidebarOption action={() => router.push("/history")} page="/history">
+                                    <AiOutlineHistory className="mr-2 text-xl" />
+                                    Historial
+                                </SidebarOption>
+                            }
+
+                            {
+                                user.roles[0].name == 'Admin' &&
+                                <SidebarOption action={() => router.push("/raffles")} page="/raffles">
+                                    <AiOutlinePlayCircle className="mr-2 text-xl" />
+                                    Sorteos
+                                </SidebarOption>
+                            }
+
 
                             
                             </div>
