@@ -24,6 +24,7 @@ const RafflesContent = () => {
     const { setLayer } = useContext(MainContext);
     const [response, isLoading, error, fetcher] = useFetch();
     const [delResponse, delLoading, delError, delFetcher] = useFetch();
+    const [runResponse, runLoading, runError, runFetcher] = useFetch();
 
     const [pageIndex, setPageIndex] = useState(1);
     const [visibleForm, setVisibleForm] = useState(false);
@@ -32,10 +33,23 @@ const RafflesContent = () => {
     const [selectedItem, setSelectedItem] = useState(null);
     const [alert, setAlert] = useState(null);
     const [storeEvent, setStoreEvent] = useState(false);
+    const [ran, setRan] =  useState(false);
 
     const onAddRaffle = () => {
         setLayer(true);
         setVisibleForm(true);
+    }
+
+    const runRaffle = (value) => {
+
+        runFetcher.get(`/raffle/run-raffle/${value}`);
+        setRan(true);
+    }
+
+    if(runResponse && !runError && ran) {
+
+        setRan(false);
+        setStoreEvent(true);
     }
 
  
@@ -142,16 +156,22 @@ const RafflesContent = () => {
                     {
                         response && !isLoading && !error ? (
                             <Table data={response.data} onSelectedItem={setPageIndex} 
-                            pageIndex={pageIndex} totalPages={response.pages} columns={getRaffleTableHeader(onDeletedSelect, onUpdateSelected)} />
+                            pageIndex={pageIndex} totalPages={response.pages} 
+                            columns={getRaffleTableHeader(onDeletedSelect, onUpdateSelected, runRaffle)} />
                         ): (
                             <div className="py-3">
                                 <Spinner />
                             </div>
                         )
+                    
                     }
+
+                    <div className="h-48"></div>
+
+                    <Footer />  
                 </Container>
 
-                <Footer />
+               
             </div>
         </div>
     )

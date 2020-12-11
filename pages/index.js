@@ -1,10 +1,12 @@
 
 import { useContext, useEffect } from 'react';
+import PlayerContent from '../components/content/PlayerContent';
 import Container from '../components/layout/Container';
 import Footer from '../components/layout/Footer';
 import Header from '../components/layout/Header';
 import Sidebar from '../components/layout/Sidebar';
 import Layer from '../components/shared/Layer';
+import Spinner from '../components/shared/Spinner';
 import RaffleBox from '../components/ticket/RaffleBox';
 import Ticket from '../components/ticket/Ticket';
 import { MainContext } from '../context';
@@ -43,9 +45,43 @@ export default function Home() {
 
        <Container>
           <Header />
+
          <div className="w-full">
-           <RaffleBox />
+           <br />
+           <br />
+
+           {
+               user ? (
+                 <>
+                  {
+                    user && user.roles[0].name == 'Player' ? (
+                      <PlayerContent />
+                    ): (
+                      <div>
+                        <h2 className="text-6xl text-center text-gray-200">Bienviendo </h2>
+        
+                        <div className="h-48"></div>
+                      </div>
+                    )
+                  }
+                 </>
+               ) : (
+                 <>
+                    <div className="flex justify-center">
+                      <Spinner />
+                    </div>
+                    <div className="h-48"></div>
+                 </>
+               )
+           }
+
+
+            
          </div>
+
+         <div className="h-48"></div>
+
+         <Footer />
        
        </Container>
 
@@ -57,7 +93,7 @@ export default function Home() {
 
       {/*<UserForm /> */}
    </div>
-   <Footer />
+   
    </>
   )
 }

@@ -3,7 +3,7 @@ const Number = ({ action, number, selected, list }) => {
 
     const selectedTag = selected == number ? 'bg-active':'bg-bg1 hover:bg-blue-900';
 
-    const exist = list.find(p => p.number == number) ? true : false;
+    const exist = list.find(p => p.betNumber == number) ? true : false;
     const tags = exist ? 'bg-gray-500 cursor-default': `${selectedTag} cursor-pointer`;
     const clickAction = exist ? () => {} : action;
    

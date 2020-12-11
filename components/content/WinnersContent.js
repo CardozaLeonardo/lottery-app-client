@@ -4,6 +4,8 @@ import Header from '../layout/Header';
 import Sidebar from '../layout/Sidebar';
 import { AiOutlineArrowLeft } from 'react-icons/ai';
 import RafflesList from './RafflesList';
+import WinnersList from './WinnersList';
+import Footer from '../layout/Footer';
 
 const WinnersContent = () => {
 
@@ -36,8 +38,14 @@ const WinnersContent = () => {
                     {
                         !showWinners ? (
                             <RafflesList setSelectedItem={setSelectedItem} setShowWinners={setShowWinners} />
-                        ) : null
+                        ) : (
+                            <WinnersList selectedItem={selectedItem} />
+                        )
                     }
+
+                    <div className="h-48"></div>
+
+                    <Footer />
 
                 </Container>
             </div>

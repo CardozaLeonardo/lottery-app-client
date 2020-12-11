@@ -6,7 +6,8 @@ import DropdownItem from '../dropdown/DropdownItem';
 import { deleteToken } from '../../util/cookie';
 import { RiWindowsFill } from 'react-icons/ri';
 
-const staticProfile =  'https://res.cloudinary.com/dgtemyvsk/image/upload/v1601193741/leo_tzqgcm.jpg';
+const staticProfile =  'https://www.nicepng.com/png/detail/806-8061298_jacques-mestre-generic-male-profile.png';
+const staticPlayerProfile = 'https://directionalfinance.com.au/wp-content/uploads/2015/11/generic-placeholder-person.png';
 
 const UserDropdown = () => {
 
@@ -34,7 +35,8 @@ const UserDropdown = () => {
                     <p className="text-gray-400 text-opacity-75 text-xs" >{ user.roles[0].name }</p>
                 </div>
                 <figure className="bg-white rounded-full p-px">
-                    <img src={staticProfile} className="h-10 w-10 rounded-full object-cover" alt="username" />
+                    <img src={user && user.roles[0].name == 'Admin' ? staticProfile : staticPlayerProfile} 
+                    className="h-10 w-10 rounded-full object-cover" alt="username" />
                 </figure>
             </div>
 

@@ -33,7 +33,7 @@ const Sidebar = ({}) => {
 
                             <SidebarOption action={() => redirectPage('/')} page="/">
                                 <AiOutlineDashboard className="mr-2 text-xl" />
-                                Dashboard
+                                Inicio
                             </SidebarOption>
 
                             { user.roles[0].name == 'Admin' &&
@@ -43,12 +43,12 @@ const Sidebar = ({}) => {
                                 </SidebarOption>
                             }
 
-                            {
+                            {/*
                                 user.roles[0].name == 'Player' &&
                                 <SidebarOption action={() => redirectPage("/history")} page="/history">
                                     <AiOutlineHistory className="mr-2 text-xl" />
                                     Historial
-                                </SidebarOption>
+                                </SidebarOption> */
                             }
 
                             {

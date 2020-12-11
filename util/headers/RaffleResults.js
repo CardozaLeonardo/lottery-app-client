@@ -7,8 +7,23 @@ const getRaffleResults = (action) => {
             accessor: 'name',
         },
         {
-            Header: 'Inicio',
-            accessor: 'startDate',
+            Header: '# Ganador',
+            accessor: 'winningNumber',
+            Cell: (e) => {
+                return (
+                    <>
+                        {
+                            !e.row.original.isActive ? (
+                                <>
+                                    {e.row.original.winningNumber}
+                                </>
+                            ): (
+                                <p className="text-gray-600 font-bold">Sin conocer</p>
+                            )
+                        }
+                    </>
+                )
+            }
         },
         {
             Header: 'Final',
@@ -39,14 +54,21 @@ const getRaffleResults = (action) => {
         {
             Header: 'Seleccionar',
             accessor: 'id',
-            Cell: ({cell: {value}}) => {
+            Cell: (e) => {
               return (
-                <div className="px-3 flex justify-center">
-                   <button onClick={() => action(value)} className={`bg-active text-gray-200 rounded-full
-                   cursor-pointer py-1 px-2 hover:bg-orange-700`}>
-                       Aceptar
-                   </button>
-                </div>
+                  <>
+                    {
+                        !e.row.original.isActive ? (
+
+                            <div className="px-3 flex justify-start">
+                                <button onClick={() => action(e.row.original.id)} className={`bg-blue-600 text-gray-200 rounded-full
+                                cursor-pointer py-1 px-2 hover:bg-blue-700`}>
+                                    Aceptar
+                                </button>
+                            </div>
+                        ) : null
+                    }
+                </>
               )
             }
           }

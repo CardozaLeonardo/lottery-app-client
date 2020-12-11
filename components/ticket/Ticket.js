@@ -1,25 +1,42 @@
 import { useFormik } from 'formik';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import Input from '../form/Input';
 import InputGroup from '../form/InputGroup';
 import Button from '../shared/Button';
 import Number from './Number';
 import * as Yup from 'yup';
+import { MainContext } from '../../context';
+import useFetch from '../../hooks/useFetch';
+import Spinner from '../shared/Spinner';
 
 const ticketValidationSchema = Yup.object({
-    amount: Yup.string()
+    bet: Yup.string()
     .required('Ingrese la cantidad')
     .matches(/^\d+$/, 'Este campo sólo admite números')
 })
 
-const Ticket = ({ addTicket, close, ticketList}) => {
+const Ticket = ({ addTicket, close, ticketList, raffleId, setStoreEvent}) => {
 
     const [selectedNumber, setSelectedNumber] = useState('-1');
     const [ticket, setTicket] = useState(null);
     const [selection, setSelection] = useState(false);
+    const [response, isLoading, error, fetcher] = useFetch();
+
+    const { user } = useContext(MainContext);
+
+    const onSaveTicket = (values) => {
+        fetcher.post('/raffle/add-bet', values);
+    }
+
+    //action
+
+    if(response && !error) {
+        setStoreEvent(true);
+        close(false);
+    }
 
     const { values, errors, handleSubmit, handleChange, touched} = useFormik({
-        initialValues: {amount: ''},
+        initialValues: {bet: ''},
         validationSchema: ticketValidationSchema,
         onSubmit: (values) => {
             if(selectedNumber == '-1'){
@@ -28,12 +45,16 @@ const Ticket = ({ addTicket, close, ticketList}) => {
             }
             
             var newItem = {
-                number: selectedNumber,
-                amount: values.amount
+                betNumber: parseInt(selectedNumber),
+                bet: parseInt(values.bet),
+                playerId: user.player.id,
+                raffleId: raffleId
             }
+
+            onSaveTicket(newItem);
             
-            addTicket(p => [...p, newItem]);
-            close(false);
+            /*addTicket(p => [...p, newItem]);
+            close(false); */
         }        
     })
 
@@ -99,8 +120,8 @@ const Ticket = ({ addTicket, close, ticketList}) => {
             <div className="p-4 w-64 bg-bg2">
                 <form onSubmit={ handleSubmit }>
                    <InputGroup label="CANTIDAD DE JUEGO (C$)">
-                       <Input type="number" value={values.amount} callback={ handleChange }  name="amount" />
-                       { touched.amount && errors.amount && <p className="text-xs text-red-500">{errors.amount}</p> }
+                       <Input type="number" value={values.bet} callback={ handleChange }  name="bet" />
+                       { touched.bet && errors.bet && <p className="text-xs text-red-500">{errors.bet}</p> }
                    </InputGroup>
 
                    <Button  type="submit" variant="primary medium">
@@ -108,6 +129,13 @@ const Ticket = ({ addTicket, close, ticketList}) => {
                    </Button>
                    
                 </form>
+                {
+                    isLoading ? (
+                        <div className="flex justify-center">
+                            <Spinner />
+                        </div>
+                    ) : null
+                }
             </div>
         </div>
     )

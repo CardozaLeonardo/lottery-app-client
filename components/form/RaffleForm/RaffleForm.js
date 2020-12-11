@@ -71,12 +71,12 @@ const RaffleForm = ({data = emptyInitial, close, update=false, itemId, alertActi
                     </InputGroup>
 
                     <InputGroup label="FECHA INICIO">
-                        <Input type="datetime" value={values.startDate} callback={handleChange} name="startDate"/>
+                        <Input type="date" value={values.startDate} callback={handleChange} name="startDate"/>
                         { touched.startDate && errors.startDate && <p className="text-xs text-red-500">{errors.startDate}</p> }
                     </InputGroup>
 
                     <InputGroup label="FECHA FIN">
-                        <Input type="datetime" value={values.endDate} callback={handleChange} name="endDate"/>
+                        <Input type="date" value={values.endDate} callback={handleChange} name="endDate"/>
                         { touched.endDate && errors.endDate && <p className="text-xs text-red-500">{errors.endDate}</p> }
                     </InputGroup>
 
