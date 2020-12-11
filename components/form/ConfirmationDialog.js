@@ -25,7 +25,7 @@ const ConfirmationDialog = ({close, children, action, isLoading}) => {
 
                             <div className="w-3/5 flex justify-between">
                                 <Button action={() => action()} variant="primary medium">
-                                    GUARDAR
+                                    ACEPTAR
                                 </Button>
 
                                 <Button action={() => close(false)} variant="default medium">

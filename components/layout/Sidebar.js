@@ -5,12 +5,19 @@ import SidebarOption from "../shared/SidebarOption";
 import Spinner from "../shared/Spinner";
 import Logo from "../shared/Logo";
 import { AiOutlineDashboard, AiOutlineUserSwitch, 
-    AiOutlineHistory, AiOutlinePlayCircle } from 'react-icons/ai';
+    AiOutlineHistory, AiOutlinePlayCircle, AiOutlineBarChart } from 'react-icons/ai';
 
 const Sidebar = ({}) => {
 
     const { user } = useContext(MainContext);
     const router = useRouter();
+
+    const redirectPage = (pathName) => {
+
+        if(router.pathname != pathName) {
+            window.location.replace(`.${pathName}`);
+        }
+    }
     
     return (
 
@@ -24,13 +31,13 @@ const Sidebar = ({}) => {
 
                             <div className="pt-8">
 
-                            <SidebarOption action={() => router.push("/")} page="/">
+                            <SidebarOption action={() => redirectPage('/')} page="/">
                                 <AiOutlineDashboard className="mr-2 text-xl" />
                                 Dashboard
                             </SidebarOption>
 
                             { user.roles[0].name == 'Admin' &&
-                                <SidebarOption action={() => router.push("/users")} page="/users">
+                                <SidebarOption action={() => redirectPage("/users")} page="/users">
                                     <AiOutlineUserSwitch className="mr-2 text-xl" />
                                     Usuarios
                                 </SidebarOption>
@@ -38,7 +45,7 @@ const Sidebar = ({}) => {
 
                             {
                                 user.roles[0].name == 'Player' &&
-                                <SidebarOption action={() => router.push("/history")} page="/history">
+                                <SidebarOption action={() => redirectPage("/history")} page="/history">
                                     <AiOutlineHistory className="mr-2 text-xl" />
                                     Historial
                                 </SidebarOption>
@@ -46,14 +53,20 @@ const Sidebar = ({}) => {
 
                             {
                                 user.roles[0].name == 'Admin' &&
-                                <SidebarOption action={() => router.push("/raffles")} page="/raffles">
+                                <SidebarOption action={() => redirectPage("/raffles")} page="/raffles">
                                     <AiOutlinePlayCircle className="mr-2 text-xl" />
                                     Sorteos
                                 </SidebarOption>
                             }
 
+                            {
+                                user.roles[0].name == 'Admin' &&
+                                <SidebarOption action={() => redirectPage("/winners")} page="/winners">
+                                    <AiOutlineBarChart className="mr-2 text-xl" />
+                                    Resultados
+                                </SidebarOption>
+                            }
 
-                            
                             </div>
                         </div>
                     </div>

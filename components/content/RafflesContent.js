@@ -9,7 +9,7 @@ import Header from "../layout/Header";
 import Footer from "../layout/Footer";
 import Layer from '../shared/Layer';
 import RaffleCreateForm from '../form/RaffleForm/RaffleCreateForm';
-//import RaffleUpdateForm from '../form/RaffleForm/RaffleUpdateForm';
+import RaffleUpdateForm from '../form/RaffleForm/RaffleUpdateForm';
 import getRaffleTableHeader from '../../util/headers/RaffleTableHeader';
 import Spinner from '../shared/Spinner';
 import ConfirmationDialog from '../form/ConfirmationDialog';
@@ -31,14 +31,14 @@ const RafflesContent = () => {
     const [showDialog, setShowDialog] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [alert, setAlert] = useState(null);
+    const [storeEvent, setStoreEvent] = useState(false);
 
     const onAddRaffle = () => {
         setLayer(true);
         setVisibleForm(true);
     }
 
-    
-
+ 
     const onDeletedSelect = (value) => {
         setShowDialog(p => !p);
         setSelectedItem(value);
@@ -51,24 +51,44 @@ const RafflesContent = () => {
 
     const onDeleteRaffle = async () => {
 
-        await delFetcher.deleteRes(`/raffle/${selectedItem}`);
+        var code = await delFetcher.deleteResWithReturn(`/raffle/${selectedItem}`);
 
-        if(delResponse) {
+        if(code && code == 200) {
             setShowDialog(false);
             setAlert({
                 color: 'success',
                 text: 'Se ha eliminado el sorteo correctamente'
             });
+            setStoreEvent(true);
         }
     }
+
+    /*if(delResponse && delResponse == 200 && !storeEvent) {
+        setShowDialog(false);
+        setAlert({
+            color: 'success',
+            text: 'Se ha eliminado el sorteo correctamente'
+        });
+        setStoreEvent(true);
+        
+    }*/
 
     useEffect(() => {
        
         if(!error) {
            fetcher.getList(`/raffle?pageNumber=${pageIndex}&pageSize=10`);
         }
- 
+
      }, [pageIndex])
+
+     useEffect(() => {
+
+        if(storeEvent) {
+            fetcher.getList(`/raffle?pageNumber=${pageIndex}&pageSize=10`);
+        }
+
+        setStoreEvent(false);
+     }, [storeEvent])
 
     return (
         <div className="flex justify-between" >
@@ -85,9 +105,16 @@ const RafflesContent = () => {
 
            {
                visibleForm ? (
-                 <RaffleCreateForm close={setVisibleForm}  alertAction={setAlert}/>
+                 <RaffleCreateForm close={setVisibleForm}  alertAction={setAlert} storeEvent={setStoreEvent}/>
                ): null
            }
+
+           {
+               visibleUpdateForm ? (
+                 <RaffleUpdateForm close={setVisibleUpdateForm} selectedItem={selectedItem}  alertAction={setAlert} storeEvent={setStoreEvent}/>
+               ): null
+           }
+
 
             <div className="w-full">
                 <Container>

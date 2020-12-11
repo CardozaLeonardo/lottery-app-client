@@ -34,6 +34,7 @@ const UsersContent = () => {
     const [showDialog, setShowDialog] = useState(false);
     const [selectedItem, setSelectedItem] = useState(null);
     const [alert, setAlert] = useState(null);
+    const [storeEvent, setStoreEvent] = useState(false);
 
     const onAddUser = () => {
         setLayer(true);
@@ -54,14 +55,15 @@ const UsersContent = () => {
 
     const onDeleteUser = async () => {
 
-        await delFetcher.deleteRes(`/user/${selectedItem}`);
+        var code = await delFetcher.deleteResWithReturn(`/user/${selectedItem}`);
 
-        if(delResponse) {
+        if(code && code == 200) {
             setShowDialog(false);
             setAlert({
                 color: 'success',
                 text: 'Se ha eliminado el usuario correctamente'
             });
+            setStoreEvent(true);
         }
     }
 
@@ -76,6 +78,15 @@ const UsersContent = () => {
        }
 
     }, [pageIndex])
+
+    useEffect(() => {
+
+        if(storeEvent) {
+            fetcher.getList(`/user/list?pageNumber=${pageIndex}&pageSize=10`);
+        }
+
+        setStoreEvent(false);
+     }, [storeEvent])
     
     return (
         <div className="flex justify-between relative" >
@@ -92,13 +103,13 @@ const UsersContent = () => {
 
            {
                visibleForm ? (
-                 <UserCreateForm close={setVisibleForm}  alertAction={setAlert}/>
+                 <UserCreateForm close={setVisibleForm}  alertAction={setAlert} storeEvent={setStoreEvent}/>
                ): null
            }
 
            {
                visibleUpdateForm ? (
-                 <UserUpdateForm close={setVisibleUpdateForm} selectedItem={selectedItem} alertAction={setAlert}/>
+                 <UserUpdateForm close={setVisibleUpdateForm} selectedItem={selectedItem} alertAction={setAlert} storeEvent={setStoreEvent}/>
                ): null
            }
             
@@ -106,10 +117,10 @@ const UsersContent = () => {
 
             <div className="w-full">
 
-               <Header />
-
-
+               
                 <Container>
+
+                    <Header />
 
                     <br />
                     <br />
@@ -123,11 +134,7 @@ const UsersContent = () => {
 
 
                     <div className="w-full py-2">
-                        {/*
-                        <br />
-                        <Button variant="medium default">
-                            FETCH DATA
-    </Button> */}
+                        
                         <Button action={onAddUser} variant="pri-outline large center">
                            <IoIosAddCircleOutline className="text-2xl mr-1" /> Add User
                         </Button>
@@ -146,9 +153,9 @@ const UsersContent = () => {
                         )
                     }
 
+                    <Footer />
                 </Container>
 
-                <Footer />
             </div>
 
 

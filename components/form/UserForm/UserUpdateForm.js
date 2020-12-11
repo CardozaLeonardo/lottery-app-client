@@ -4,7 +4,7 @@ import Spinner from "../../shared/Spinner";
 import Modal from "../Modal";
 import UserForm from "./UserForm";
 
-const UserUpdateForm = ({ selectedItem, close, alertAction }) => {
+const UserUpdateForm = ({ selectedItem, close, alertAction, storeEvent }) => {
 
     const [response, isLoading, error, fetcher] = useFetch();
 
@@ -21,7 +21,8 @@ const UserUpdateForm = ({ selectedItem, close, alertAction }) => {
         <>
         <Modal close={close}>
 
-            { response && <UserForm data={ response } userId={selectedItem} update={true} alertAction={alertAction} /> }
+            { response && <UserForm data={ response } userId={selectedItem} update={true}
+             storeEvent={storeEvent} alertAction={alertAction} /> }
 
             {isLoading &&
                 <div className="flex justify-center">

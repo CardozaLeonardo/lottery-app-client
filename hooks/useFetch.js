@@ -122,6 +122,37 @@ const useFetch = () => {
         setIsLoading(false);
     }
 
+    const put = async (url, data) => {
+        setIsLoading(true);
+        setResponse(null);
+        setError(null);
+
+        const resp = await fetch(`${BASE_URL}${url}`, {
+            method: 'PUT',
+            mode: 'cors',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${getToken()}`
+            },
+            body: JSON.stringify(data)
+        }).then(respuest => {
+
+            if(respuest.ok) {
+
+                return respuest.json()
+            }else{
+                
+                setError(respuest.status)
+                return respuest.json()
+            }
+        })
+        .then((res) => { return res})
+        .catch(err => {setError(err.status)});
+
+        setResponse(resp);
+        setIsLoading(false);
+    }
+
     const deleteRes = async (url) => {
         
         setIsLoading(true);
@@ -152,15 +183,44 @@ const useFetch = () => {
         setIsLoading(false);
     }
 
+    const deleteResWithReturn = async (url) => {
+        
+        
+        const resp = await fetch(`${BASE_URL}${url}`, {
+            method: 'DELETE',
+            mode: 'cors',
+            headers: {
+                'Content-Type':'application/json',
+                'Authorization':`Bearer ${getToken()}`
+            },
+        }).then(respuest => {
+
+            if(respuest.ok) {
+
+                return respuest.status
+            }else{
+                //setError(respuest.status)
+                return respuest.json()
+            }
+        })
+        .then((res) => { return res})
+        .catch(err => {console.log(err)});
+
+        return resp;
+        
+    }
+
     return [
         response,
         isLoading,
         error,
         {
             getList,
+            put,
             post,
             get,
-            deleteRes
+            deleteRes,
+            deleteResWithReturn
         }
         
     ]

@@ -1,6 +1,5 @@
-import OperationIcon from "../../components/form/OperationIcon";
 
-const getRaffleTableHeader = (onDeleteSelected, onUpdateSeleted) => {
+const getRaffleResults = (action) => {
 
     return [
         { 
@@ -38,14 +37,15 @@ const getRaffleTableHeader = (onDeleteSelected, onUpdateSeleted) => {
             }
         },
         {
-            Header: 'Opcion',
+            Header: 'Seleccionar',
             accessor: 'id',
             Cell: ({cell: {value}}) => {
               return (
-                <div className="px-3 flex justify-evenly">
-                   {/*<OperationIcon type="view" action={() => {}} /> */}
-                   <OperationIcon type="edit" action={() => onUpdateSeleted(value)} />
-                   <OperationIcon type="delete" action={() => onDeleteSelected(value)} />
+                <div className="px-3 flex justify-center">
+                   <button onClick={() => action(value)} className={`bg-active text-gray-200 rounded-full
+                   cursor-pointer py-1 px-2 hover:bg-orange-700`}>
+                       Aceptar
+                   </button>
                 </div>
               )
             }
@@ -53,4 +53,4 @@ const getRaffleTableHeader = (onDeleteSelected, onUpdateSeleted) => {
     ]
 }
 
-export default getRaffleTableHeader;
+export default getRaffleResults;

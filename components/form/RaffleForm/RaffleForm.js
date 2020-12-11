@@ -4,6 +4,7 @@ import * as Yup from 'yup';
 import { MainContext } from '../../../context';
 import useFetch from '../../../hooks/useFetch';
 import Button from '../../shared/Button';
+import Spinner from '../../shared/Spinner';
 import Input from '../Input';
 import InputGroup from '../InputGroup';
 
@@ -22,14 +23,14 @@ const raffleValidationSchema = Yup.object({
     .max(30, 'Muy largo')
     .min(5, 'MuyCorto'),
 
-    startDate: Yup.date()
+    /*startDate: Yup.date()
     .required('Requerido'),
 
     endDate: Yup.date()
-    .required('Requerido')
+    .required('Requerido')*/
 })
 
-const RaffleForm = ({data = emptyInitial, close, update=false, itemId, alertAction}) => {
+const RaffleForm = ({data = emptyInitial, close, update=false, itemId, alertAction, storeEvent}) => {
     const [response, isLoading, error, fetcher] = useFetch();
     const { setLayer } = useContext(MainContext);
 
@@ -45,6 +46,7 @@ const RaffleForm = ({data = emptyInitial, close, update=false, itemId, alertActi
         
         setLayer(false);
         close(false);
+        storeEvent(true);
         alertAction({
             color: 'success',
             text: 'Sorteo creado con éxito'
@@ -69,12 +71,12 @@ const RaffleForm = ({data = emptyInitial, close, update=false, itemId, alertActi
                     </InputGroup>
 
                     <InputGroup label="FECHA INICIO">
-                        <Input type="date" value={values.startDate} callback={handleChange} name="startDate"/>
+                        <Input type="datetime" value={values.startDate} callback={handleChange} name="startDate"/>
                         { touched.startDate && errors.startDate && <p className="text-xs text-red-500">{errors.startDate}</p> }
                     </InputGroup>
 
                     <InputGroup label="FECHA FIN">
-                        <Input type="date" value={values.endDate} callback={handleChange} name="endDate"/>
+                        <Input type="datetime" value={values.endDate} callback={handleChange} name="endDate"/>
                         { touched.endDate && errors.endDate && <p className="text-xs text-red-500">{errors.endDate}</p> }
                     </InputGroup>
 

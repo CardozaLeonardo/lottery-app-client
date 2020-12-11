@@ -43,7 +43,7 @@ const Raffles = () => {
             }
 
             {
-                user && user.roles[0].name != 'Admin' && <Forbidden />
+                userResponse && userResponse.roles[0].name != 'Admin' ? (<Forbidden />) : null
             }
         </>
     )

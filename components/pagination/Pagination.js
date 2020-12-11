@@ -25,6 +25,10 @@ const Pagination = ({index, onSelectedItem, totalPages}) => {
 
         for (let i = firstOnSet - 1; i < 7 || (i < totalPages && index >= 7); i++) {
 
+            if(i + 1 > totalPages) {
+                break;
+            }
+            
             if(set.length === 5 && i > 7)
             {
                 break;
@@ -69,7 +73,9 @@ const Pagination = ({index, onSelectedItem, totalPages}) => {
                 }
 
                 <PaginationItem  term="..." disabled />
-                <PaginationItem onSelectedItem={onSelectedItem} term={totalPages - 1} />
+                {
+                    totalPages >= 2 && <PaginationItem onSelectedItem={onSelectedItem} term={totalPages - 1} />
+                }
                 <PaginationItem onSelectedItem={onSelectedItem} term={totalPages} />
 
                 {

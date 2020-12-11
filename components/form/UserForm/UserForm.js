@@ -66,7 +66,7 @@ const userValidationSchema = Yup.object({
 })
 
 const UserForm = ({data = emptyInitial, close, updatePassword=false, 
-    alertAction, update=false, userId=40}) => {
+    alertAction, update=false, userId=40, storeEvent}) => {
 
     const [response, isLoading, error, fetcher] = useFetch();
     const { setLayer } = useContext(MainContext);
@@ -92,7 +92,8 @@ const UserForm = ({data = emptyInitial, close, updatePassword=false,
         alertAction({
             color: 'success',
             text: 'Usuario creado con éxito'
-        })
+        });
+        storeEvent(true)
     }
     
     const { values, errors, handleSubmit, handleChange, touched} = useFormik({
